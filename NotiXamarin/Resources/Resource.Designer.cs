@@ -26,6 +26,8 @@ namespace NotiXamarin
 		
 		public static void UpdateIdValues()
 		{
+			global::NotiXamarin.Core.Resource.String.ApplicationName = global::NotiXamarin.Resource.String.ApplicationName;
+			global::NotiXamarin.Core.Resource.String.Hello = global::NotiXamarin.Resource.String.Hello;
 		}
 		
 		public partial class Attribute
