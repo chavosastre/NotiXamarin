@@ -6,7 +6,7 @@ using Square.Picasso;
 
 namespace NotiXamarin
 {
-    [Activity(Label = "NotiXamarin", MainLauncher = false, Icon = "@drawable/icon")]
+    [Activity(Label = "NotiXamarin_ensayo", Icon = "@drawable/icon", ParentActivity = typeof(NewsListActivity))]
     public class MainActivity : Activity
     {
         internal static string KEY_ID = "KEY_ID";
@@ -18,11 +18,15 @@ namespace NotiXamarin
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            var id = Intent.Extras.GetInt(KEY_ID);
+            // var id = Intent.Extras.GetInt(KEY_ID);
+
+            PrepareActionBar();
+
 
             var newsService = new NewsService();
+            var news = newsService.GetNewsById(1);
 
-            var news = newsService.GetNewsById(id);
+            var newsImageExample = GetDrawable(Resource.Drawable.Icon);
 
             var newsTitle = FindViewById<TextView>(Resource.Id.newsTitle);
             var newsBody = FindViewById<TextView>(Resource.Id.newsBody);
@@ -32,8 +36,7 @@ namespace NotiXamarin
             Android.Graphics.Point point = new Android.Graphics.Point();
             display.GetSize(point);
 
-            var imageURL = string.Concat(ValuesService.ImagesBaseURL,
-                news.ImageName);
+            var imageURL = string.Concat(ValuesService.ImagesBaseURL, news.ImageName);
 
             Picasso.With(ApplicationContext)
                 .Load(imageURL)
@@ -42,6 +45,11 @@ namespace NotiXamarin
 
             newsTitle.Text = news.Title;
             newsBody.Text = news.Body;
+        }
+
+        private void PrepareActionBar()
+        {
+            ActionBar.SetDisplayHomeAsUpEnabled(true);
         }
     }
 }
