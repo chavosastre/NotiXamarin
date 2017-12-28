@@ -9,31 +9,26 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using NotiXamarin.Adapters;
-using NotiXamarin.Core.Models;
 using NotiXamarin.Core.Services;
 
 namespace NotiXamarin.Fragments
 {
-    public class AllNewsListFragment : BaseNewsListFragment
+    public class SavedNewsListFragment : BaseNewsListFragment
     {
-        private NewsService _newsService;
+        private NewsLocalService _newsLocalService;
 
-        public AllNewsListFragment()
+        public SavedNewsListFragment()
         {
-            _newsService = new NewsService();
+            _newsLocalService = new NewsLocalService();
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
 
-            if (!_news.Any())
-            {
-                _news = _newsService.GetNews();
-            }
+            _news = _newsLocalService.GetAllSavedForReadLater();
 
             SetupFragment();
         }
     }
-} 
+}

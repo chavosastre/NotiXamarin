@@ -11,7 +11,7 @@ using NotiXamarin.Fragments;
 
 namespace NotiXamarin
 {
-    [Activity(Label = "NotiXamarin", MainLauncher = true)]
+    [Activity(Label = "NotiXamarin", MainLauncher = true, LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
     public class NewsListActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -21,9 +21,33 @@ namespace NotiXamarin
             // Create your application here
             SetContentView(Resource.Layout.NewsList);
 
-            var transaction = FragmentManager.BeginTransaction();
-            transaction.Add(Resource.Id.newsListFragmentContainer, new AllNewsListFragment());
-            transaction.Commit();
+            ActionBar.NavigationMode = ActionBarNavigationMode.Tabs;
+
+            AddTab("All news", new AllNewsListFragment());
+            AddTab("Saved news", new SavedNewsListFragment());
+        }
+
+        private void AddTab(string tabTitle, Fragment fragment)
+        {
+            var tab = ActionBar.NewTab();
+            tab.SetText(tabTitle);
+
+            tab.TabSelected += delegate (object sender, ActionBar.TabEventArgs e)
+            {
+                var previousFragment = FragmentManager.FindFragmentById(Resource.Id.newsListFragmentContainer);
+                if (previousFragment != null)
+                {
+                    e.FragmentTransaction.Remove(previousFragment);
+                }
+                e.FragmentTransaction.Add(Resource.Id.newsListFragmentContainer, fragment);
+            };
+
+            tab.TabUnselected += delegate (object sender, ActionBar.TabEventArgs e)
+            {
+                e.FragmentTransaction.Remove(fragment);
+            };
+
+            ActionBar.AddTab(tab);
         }
     }
 }
