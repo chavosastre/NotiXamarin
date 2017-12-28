@@ -3,6 +3,7 @@ using Android.Widget;
 using Android.OS;
 using NotiXamarin.Core.Services;
 using Square.Picasso;
+using Android.Views;
 
 namespace NotiXamarin
 {
@@ -18,13 +19,13 @@ namespace NotiXamarin
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            // var id = Intent.Extras.GetInt(KEY_ID);
+            var id = Intent.Extras.GetInt(KEY_ID);
 
             PrepareActionBar();
 
 
             var newsService = new NewsService();
-            var news = newsService.GetNewsById(1);
+            var news = newsService.GetNewsById(id);
 
             var newsImageExample = GetDrawable(Resource.Drawable.Icon);
 
@@ -50,6 +51,30 @@ namespace NotiXamarin
         private void PrepareActionBar()
         {
             ActionBar.SetDisplayHomeAsUpEnabled(true);
+        }
+
+        //aqui se agregan las opciones a la barra de acción
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.newsActionMenu, menu);
+            return base.OnCreateOptionsMenu(menu);
+        }
+        //aqui se determina que se hace cuando se da clic sobre los iconos de la barra
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_read_later:
+                    HandleReadLater();
+                    return true;
+                default:
+                    return base.OnOptionsItemSelected(item);
+            }
+        }
+
+        private void HandleReadLater()
+        {
+            Toast.MakeText(this, "read later", ToastLength.Short).Show();
         }
     }
 }
