@@ -4,6 +4,7 @@ using Android.OS;
 using NotiXamarin.Core.Services;
 using Square.Picasso;
 using Android.Views;
+using NotiXamarin.Core.Models;
 
 namespace NotiXamarin
 {
@@ -11,7 +12,11 @@ namespace NotiXamarin
     public class MainActivity : Activity
     {
         internal static string KEY_ID = "KEY_ID";
-
+        private News _news;
+        private readonly string KEY_BODY = "KEY_BODY";
+        private readonly string KEY_IMAGE_NAME = "KEY_IMAGE_NAME";
+        private readonly string KEY_TITLE = "KEY_TITLE";
+        //En el bundle se guardan temporalmente las noticias
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -19,15 +24,23 @@ namespace NotiXamarin
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            var id = Intent.Extras.GetInt(KEY_ID);
-
             PrepareActionBar();
 
+            var id = Intent.Extras.GetInt(KEY_ID);
 
-            var newsService = new NewsService();
-            var news = newsService.GetNewsById(id);
-
-            var newsImageExample = GetDrawable(Resource.Drawable.Icon);
+            if (bundle == null)
+            {
+                var newsService = new NewsService();
+                _news = newsService.GetNewsById(id);
+            }
+            else
+            {
+                _news = new News();
+                _news.Id = bundle.GetInt(KEY_ID);
+                _news.Body = bundle.GetString(KEY_BODY);
+                _news.ImageName = bundle.GetString(KEY_IMAGE_NAME);
+                _news.Title = bundle.GetString(KEY_TITLE);
+            }
 
             var newsTitle = FindViewById<TextView>(Resource.Id.newsTitle);
             var newsBody = FindViewById<TextView>(Resource.Id.newsBody);
@@ -37,15 +50,26 @@ namespace NotiXamarin
             Android.Graphics.Point point = new Android.Graphics.Point();
             display.GetSize(point);
 
-            var imageURL = string.Concat(ValuesService.ImagesBaseURL, news.ImageName);
+            var imageURL = string.Concat(ValuesService.ImagesBaseURL,
+                _news.ImageName);
 
             Picasso.With(ApplicationContext)
                 .Load(imageURL)
                 .Resize(point.X, 0)
                 .Into(newsImage);
 
-            newsTitle.Text = news.Title;
-            newsBody.Text = news.Body;
+            newsTitle.Text = _news.Title;
+            newsBody.Text = _news.Body;
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            outState.PutString(KEY_BODY, _news.Body);
+            outState.PutInt(KEY_ID, _news.Id);
+            outState.PutString(KEY_IMAGE_NAME, _news.ImageName);
+            outState.PutString(KEY_TITLE, _news.Title);
+
+            base.OnSaveInstanceState(outState);
         }
 
         private void PrepareActionBar()
