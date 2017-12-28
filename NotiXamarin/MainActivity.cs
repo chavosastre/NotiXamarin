@@ -5,6 +5,7 @@ using NotiXamarin.Core.Services;
 using Square.Picasso;
 using Android.Views;
 using NotiXamarin.Core.Models;
+using System;
 
 namespace NotiXamarin
 {
@@ -98,7 +99,16 @@ namespace NotiXamarin
 
         private void HandleReadLater()
         {
-            Toast.MakeText(this, "read later", ToastLength.Short).Show();
+            try
+            {
+                var newsLocalService = new NewsLocalService();
+                newsLocalService.Save(_news);
+                Toast.MakeText(this, "Saved", ToastLength.Short).Show();
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(this, "error: " + ex.Message, ToastLength.Long).Show();
+            }
         }
     }
 }
