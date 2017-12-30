@@ -35,5 +35,48 @@ namespace NotiXamarin.Fragments
 
             SetupFragment();
         }
+
+        public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
+        {
+            if (_selectedNews.Count > 0)
+            {
+                inflater.Inflate(Resource.Menu.newsActionMenu, menu);
+            }
+
+            base.OnCreateOptionsMenu(menu, inflater);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_read_later:
+                    SaveSelectedNews(_selectedNews);
+                    return true;
+                default:
+                    return base.OnOptionsItemSelected(item);
+            }
+        }
+
+        private void SaveSelectedNews(List<News> selectedNews)
+        {
+            try
+            {
+                var newsLocalService = new NewsLocalService();
+                foreach (var news in selectedNews)
+                {
+                    newsLocalService.Save(news);
+                }
+
+                Toast.MakeText(Activity, $"{selectedNews.Count} Noticias Guardadas", ToastLength.Short).Show();
+                selectedNews.Clear();
+                Activity.InvalidateOptionsMenu();
+                UnselectElements();
+            }
+            catch (Exception ex)
+            {
+                Toast.MakeText(Activity, ex.Message, ToastLength.Short).Show();
+            }
+        }
     }
 } 
