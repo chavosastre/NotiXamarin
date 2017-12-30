@@ -19,7 +19,8 @@ namespace NotiXamarin.Fragments
         protected ListView _newsListView;
         protected List<News> _news;
         protected List<News> _selectedNews;
-        private NewsListAdapter _newsListAdapter;
+        protected NewsListAdapter _newsListAdapter;
+        
 
         public BaseNewsListFragment()
         {

@@ -15,9 +15,10 @@ using NotiXamarin.Core.Services;
 
 namespace NotiXamarin.Fragments
 {
-    public class AllNewsListFragment : BaseNewsListFragment
+    internal class AllNewsListFragment : BaseNewsListFragment, INotify
     {
         private NewsService _newsService;
+        public int CurrentPage { get; set; }
 
         public AllNewsListFragment()
         {
@@ -30,10 +31,25 @@ namespace NotiXamarin.Fragments
 
             if (!_news.Any())
             {
-                _news = _newsService.GetNews();
+                CurrentPage = 1;
+                _news = _newsService.GetNews(CurrentPage);
             }
 
             SetupFragment();
+
+            _newsListAdapter.RegisterLoadObserver(this);
+        }
+
+        public void NotifyObserver()
+        {
+            CurrentPage++;
+            var nextNews = _newsService.GetNews(CurrentPage);
+            if (nextNews.Any())
+            {
+                _news.AddRange(nextNews);
+                _newsListAdapter.AddNews(_news);
+                _newsListAdapter.NotifyDataSetChanged();
+            }
         }
 
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
@@ -68,7 +84,7 @@ namespace NotiXamarin.Fragments
                     newsLocalService.Save(news);
                 }
 
-                Toast.MakeText(Activity, $"{selectedNews.Count} Noticias Guardadas", ToastLength.Short).Show();
+                Toast.MakeText(Activity, $"{selectedNews.Count} news saved", ToastLength.Short).Show();
                 selectedNews.Clear();
                 Activity.InvalidateOptionsMenu();
                 UnselectElements();
