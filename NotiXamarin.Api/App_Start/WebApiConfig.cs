@@ -9,9 +9,9 @@ namespace NotiXamarin.Api
     {
         public static void Register(HttpConfiguration config)
         {
-            // Configuración y servicios de API web
+            // Web API configuration and services
 
-            // Rutas de API web
+            // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

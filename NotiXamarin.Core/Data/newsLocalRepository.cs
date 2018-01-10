@@ -9,8 +9,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using NotiXamarin.Core.Models;
 using SQLite;
+using NotiXamarin.Core.Models;
 
 namespace NotiXamarin.Core.Data
 {
@@ -18,7 +18,6 @@ namespace NotiXamarin.Core.Data
     {
         private string _dbPath;
 
-        //Este es mi contructor
         public NewsLocalRepository(string dbPath)
         {
             _dbPath = dbPath;
@@ -27,7 +26,7 @@ namespace NotiXamarin.Core.Data
                 _db.CreateTable<News>();
             }
         }
-         
+
         public void Save(News news)
         {
             using (var _db = new SQLiteConnection(_dbPath))

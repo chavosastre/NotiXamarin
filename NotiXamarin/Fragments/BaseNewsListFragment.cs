@@ -9,18 +9,17 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using NotiXamarin.Adapters;
 using NotiXamarin.Core.Models;
+using NotiXamarin.Adapters;
 
 namespace NotiXamarin.Fragments
 {
- public class BaseNewsListFragment : Fragment, ISelectedChecker
+    internal class BaseNewsListFragment : Fragment, ISelectedChecker
     {
         protected ListView _newsListView;
         protected List<News> _news;
         protected List<News> _selectedNews;
         protected NewsListAdapter _newsListAdapter;
-        
 
         public BaseNewsListFragment()
         {

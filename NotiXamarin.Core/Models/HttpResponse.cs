@@ -9,11 +9,13 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using System.Net;
 
-namespace NotiXamarin.Adapters
+namespace NotiXamarin.Core.Models
 {
-    internal interface ISelectedChecker
+    public class HttpResponse
     {
-        bool IsItemSelected(int id);
+        public string Content { get; set; }
+        public HttpStatusCode HttpStatusCode { get; set; }
     }
 }

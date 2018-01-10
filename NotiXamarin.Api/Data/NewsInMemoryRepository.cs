@@ -41,10 +41,11 @@ namespace NotiXamarin.Api.Data
                 }
             }
         }
+
         public List<News> GetNews(int page)
         {
             return _news.Skip((page - 1) * size).Take(size)
-                .Select(x => new News { Id = x.Id, ImageName = x.ImageName, Title = x.Title }).ToList();
+                .Select(x => new News {Id = x.Id, ImageName = x.ImageName, Title = x.Title }).ToList();
         }
 
         public News GetNewsById(int Id)

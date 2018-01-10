@@ -9,12 +9,12 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using NotiXamarin.Core.Models;
 using NotiXamarin.Core.Services;
+using NotiXamarin.Core.Models;
 
 namespace NotiXamarin.Fragments
 {
-    public class SavedNewsListFragment : BaseNewsListFragment
+    internal class SavedNewsListFragment : BaseNewsListFragment
     {
         private NewsLocalService _newsLocalService;
 

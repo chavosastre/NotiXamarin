@@ -3,13 +3,13 @@ using Android.Widget;
 using Android.OS;
 using NotiXamarin.Core.Services;
 using Square.Picasso;
+using System;
 using Android.Views;
 using NotiXamarin.Core.Models;
-using System;
 
 namespace NotiXamarin
 {
-    [Activity(Label = "NotiXamarin_ensayo", Icon = "@drawable/icon", ParentActivity = typeof(NewsListActivity))]
+    [Activity(Label = "NotiXamarin", Icon = "@drawable/icon", ParentActivity = typeof(NewsListActivity))]
     public class MainActivity : Activity
     {
         internal static string KEY_ID = "KEY_ID";
@@ -17,13 +17,13 @@ namespace NotiXamarin
         private readonly string KEY_BODY = "KEY_BODY";
         private readonly string KEY_IMAGE_NAME = "KEY_IMAGE_NAME";
         private readonly string KEY_TITLE = "KEY_TITLE";
-        //En el bundle se guardan temporalmente las noticias
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
-            SetContentView(Resource.Layout.Main);
+             SetContentView (Resource.Layout.Main);
 
             PrepareActionBar();
 
@@ -51,7 +51,7 @@ namespace NotiXamarin
             Android.Graphics.Point point = new Android.Graphics.Point();
             display.GetSize(point);
 
-            var imageURL = string.Concat(ValuesService.ImagesBaseURL,
+            var imageURL = string.Concat(ValuesService.ImagesBaseURL, 
                 _news.ImageName);
 
             Picasso.With(ApplicationContext)
@@ -61,6 +61,11 @@ namespace NotiXamarin
 
             newsTitle.Text = _news.Title;
             newsBody.Text = _news.Body;
+        }
+
+        private void PrepareActionBar()
+        {
+            ActionBar.SetDisplayHomeAsUpEnabled(true);
         }
 
         protected override void OnSaveInstanceState(Bundle outState)
@@ -73,18 +78,12 @@ namespace NotiXamarin
             base.OnSaveInstanceState(outState);
         }
 
-        private void PrepareActionBar()
-        {
-            ActionBar.SetDisplayHomeAsUpEnabled(true);
-        }
-
-        //aqui se agregan las opciones a la barra de acción
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.newsActionMenu, menu);
             return base.OnCreateOptionsMenu(menu);
         }
-        //aqui se determina que se hace cuando se da clic sobre los iconos de la barra
+
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             switch (item.ItemId)

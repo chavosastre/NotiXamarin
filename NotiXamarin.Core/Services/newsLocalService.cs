@@ -32,7 +32,7 @@ namespace NotiXamarin.Core.Services
         {
             return _newsLocalRepository.GetAll();
         }
-         
+
         public void Delete(int id)
         {
             _newsLocalRepository.Delete(id);
@@ -40,7 +40,7 @@ namespace NotiXamarin.Core.Services
 
         public void Delete(List<int> ids)
         {
-            ids.ForEach(x => Delete(x)); 
+            ids.ForEach(x => Delete(x));
         }
 
         public void DeleteAll()

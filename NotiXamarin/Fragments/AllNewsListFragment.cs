@@ -9,9 +9,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using NotiXamarin.Adapters;
-using NotiXamarin.Core.Models;
 using NotiXamarin.Core.Services;
+using NotiXamarin.Core.Models;
+using NotiXamarin.Adapters;
 
 namespace NotiXamarin.Fragments
 {
@@ -95,4 +95,4 @@ namespace NotiXamarin.Fragments
             }
         }
     }
-} 
+}
